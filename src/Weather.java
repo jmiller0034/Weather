@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-
+import org.json.*;
 public class Weather {
 
 	public static void main(String[] args) {
@@ -17,11 +17,10 @@ public class Weather {
 			URLConnection connect = url.openConnection();
 		    BufferedReader in = new BufferedReader(new InputStreamReader(
                     connect.getInputStream()));
-		    
-		     String inputLine;
-		        while ((inputLine = in.readLine()) != null) 
-		            System.out.println(inputLine);
-		        in.close();
+		    System.out.println(in.toString());
+		    parser(in.toString());
+	
+	        in.close();
 		
 		}
 		catch (Exception e)
@@ -32,7 +31,20 @@ public class Weather {
 	
 	public static void parser(String input)
 	{
-		
+		JSONObject obj;
+		try
+		{
+			
+		JSONArray array = new JSONArray(input);
+		System.out.println("array length: " + array.length());
+		 for(int i=0; i<array.length(); i++){
+			 //obj = array.getJSONObject(i);
+			 //System.out.println(obj.toString());
+			 System.out.println(array.get(i).toString());
+		 }
+		 
+		}
+		catch (Exception e) { System.out.println(e.getMessage());}
 	}
 
 }
