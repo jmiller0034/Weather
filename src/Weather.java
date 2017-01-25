@@ -10,6 +10,7 @@ import org.json.*;
 public class Weather {
 	
 	final static String DEGREE = "\u00b0";
+	public static String current;
 	public static int SIZE = 13;
 	public static String[] periodname = new String[SIZE];
 	//public static ArrayList<WeatherObject> weathers;
@@ -55,8 +56,11 @@ public class Weather {
 		{
 			
 		JSONArray array = new JSONArray(input);
+		getCurrentWeather(array.getJSONObject(0).getJSONObject("currentobservation"));
+		
 		loc = array.getJSONObject(0).getJSONObject("location");
-		System.out.println("location: " + loc.getString("areaDescription"));
+		System.out.println(loc.getString("areaDescription"));
+		System.out.println(current);
 		obj = array.getJSONObject(0).getJSONObject("time");
 		populateperiodname(obj);
 		obj = array.getJSONObject(0).getJSONObject("data");
@@ -91,14 +95,37 @@ public class Weather {
 		catch (Exception e) {}
 	}
 
+	public static void getCurrentWeather(JSONObject o)
+	{
+		String deg;
+		try
+		{
+			deg = o.getString("Windd");
+			deg = toDirection(Double.parseDouble(deg));
+			current = o.getString("Date") + ", " + o.getString("Temp") + DEGREE +", " + o.getString("Winds") + "MPH  "
+				+ deg + ", " + o.getString("Weather") + ", " + o.getString("Dewp") + DEGREE;
+		}
+		catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
+	}
+	
 	public static void display()
 	{
 		String out;
+
 		for (int i = 0; i < SIZE; i++)
 		{
 			out = periodname[i] + ": " + weathers[0].getTemp() + DEGREE +", " + weathers[0].getPop() + "%, ";
 			out = out + weathers[i].getWeatherdescr();
 			System.out.println(out);
 		}
+	}
+	
+	public static String toDirection(double x)
+	{
+		
+		String directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+	    return directions[ (int)Math.round((  ((double)x % 360) / 45)) ];
 	}
 }
