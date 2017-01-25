@@ -17,8 +17,16 @@ public class Weather {
 			URLConnection connect = url.openConnection();
 		    BufferedReader in = new BufferedReader(new InputStreamReader(
                     connect.getInputStream()));
-		    System.out.println(in.toString());
-		    parser(in.toString());
+		    String line;
+		    String input = "[";
+		    while((line = in.readLine() ) != null )
+		    {
+		    	
+		    	input  = input + "" + line;
+		    	
+		    }
+		    input = input + "]";
+		    parser(input);
 	
 	        in.close();
 		
@@ -36,10 +44,11 @@ public class Weather {
 		{
 			
 		JSONArray array = new JSONArray(input);
+		obj = array.getJSONObject(0).getJSONObject("data");
+		array = obj.getJSONArray("temperature");
 		System.out.println("array length: " + array.length());
+		
 		 for(int i=0; i<array.length(); i++){
-			 //obj = array.getJSONObject(i);
-			 //System.out.println(obj.toString());
 			 System.out.println(array.get(i).toString());
 		 }
 		 
