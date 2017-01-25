@@ -4,14 +4,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+
 import org.json.*;
 public class Weather {
 	
-	public static String[] periodname = new String[13];
-
+	final static String DEGREE = "\u00b0";
+	public static int SIZE = 13;
+	public static String[] periodname = new String[SIZE];
+	//public static ArrayList<WeatherObject> weathers;
+	public static WeatherObject[]  weathers = new WeatherObject[SIZE]; 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		URL url = null;
+		
 		try
 		{
 			String urlString = "http://forecast.weather.gov/MapClick.php?lat=30.2672&lon=-97.7431&FcstType=json";
@@ -31,6 +37,7 @@ public class Weather {
 		    parser(input);
 	
 	        in.close();
+	        display();
 		
 		}
 		catch (Exception e)
@@ -42,6 +49,8 @@ public class Weather {
 	public static void parser(String input)
 	{
 		JSONObject obj, loc;
+		JSONArray temp, pop, weather;
+		String tempS, weatherS, popS;
 		try
 		{
 			
@@ -51,15 +60,22 @@ public class Weather {
 		obj = array.getJSONObject(0).getJSONObject("time");
 		populateperiodname(obj);
 		obj = array.getJSONObject(0).getJSONObject("data");
-		array = obj.getJSONArray("temperature");
-		System.out.println("array length: " + array.length());
+		temp = obj.getJSONArray("temperature");
+		pop = obj.getJSONArray("pop");
+		weather = obj.getJSONArray("weather");
 		
-		 for(int i=0; i<array.length(); i++){
-			 System.out.println(array.get(i).toString());
+		 for(int i=0; i< SIZE; i++){
+			 tempS = temp.getString(i);
+			 popS = pop.get(i).toString();
+			 if (popS.equals("null")) {popS = "0";}
+			 weatherS = weather.getString(i);
+			 weathers[i] = (new WeatherObject(tempS, popS, weatherS));
 		 }
 		 
 		}
-		catch (Exception e) { System.out.println(e.getMessage());}
+		catch (Exception e) { System.out.println(e.getMessage());
+			e.printStackTrace(System.out);
+		}
 	}
 	
 	public static void populateperiodname(JSONObject inObject)
@@ -70,10 +86,19 @@ public class Weather {
 			for (int i = 0; i < array.length(); i ++)
 			{
 				periodname[i] = array.getString(i);
-				System.out.println(periodname[i]);
 			}
 		}
 		catch (Exception e) {}
 	}
 
+	public static void display()
+	{
+		String out;
+		for (int i = 0; i < SIZE; i++)
+		{
+			out = periodname[i] + ": " + weathers[0].getTemp() + DEGREE +", " + weathers[0].getPop() + "%, ";
+			out = out + weathers[i].getWeatherdescr();
+			System.out.println(out);
+		}
+	}
 }
