@@ -21,7 +21,7 @@ public class Weather {
 		
 		try
 		{
-			String urlString = "http://forecast.weather.gov/MapClick.php?lat=30.2672&lon=-97.7431&FcstType=json";
+			String urlString = "http://forecast.weather.gov/MapClick.php?lat=29.8833&lon=-97.9414&FcstType=json";
 			url = new URL(urlString);
 			URLConnection connect = url.openConnection();
 		    BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -47,6 +47,7 @@ public class Weather {
 		}		
 	}
 	
+	//function used to create a JSON object and parse all data needed and call helper functions to access data
 	public static void parser(String input)
 	{
 		JSONObject obj, loc;
@@ -82,6 +83,8 @@ public class Weather {
 		}
 	}
 	
+	
+	// helper function used to populate an array with period names ie today, tonight, etc
 	public static void populateperiodname(JSONObject inObject)
 	{
 		try 
@@ -95,6 +98,8 @@ public class Weather {
 		catch (Exception e) {}
 	}
 
+	
+	//helper function used to get the current weather data
 	public static void getCurrentWeather(JSONObject o)
 	{
 		String deg;
@@ -102,25 +107,29 @@ public class Weather {
 		{
 			deg = o.getString("Windd");
 			deg = toDirection(Double.parseDouble(deg));
-			current = o.getString("Date") + ", " + o.getString("Temp") + DEGREE +", " + o.getString("Winds") + "MPH  "
-				+ deg + ", " + o.getString("Weather") + ", " + o.getString("Dewp") + DEGREE;
+			current = "Currently: " + o.getString("Temp") + DEGREE +"F, " + o.getString("Winds") + "MPH  "
+				+ deg + ", " + o.getString("Weather") + ", " + o.getString("Dewp") + DEGREE + " Dew";
 		}
 		catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
 	}
 	
+	
+	//helper method used to display all stored future weather data
 	public static void display()
 	{
 		String out;
 
 		for (int i = 0; i < SIZE; i++)
 		{
-			out = periodname[i] + ": " + weathers[0].getTemp() + DEGREE +", " + weathers[0].getPop() + "%, ";
+			out = periodname[i] + ": " + weathers[i].getTemp() + DEGREE +"F, " + weathers[0].getPop() + "% precip, ";
 			out = out + weathers[i].getWeatherdescr();
 			System.out.println(out);
 		}
 	}
+	
+	//helper function used to convert degrees to cardinal directions
 	
 	public static String toDirection(double x)
 	{
