@@ -44,17 +44,20 @@ public class Weather {
 		    	
 		    }
 		    input = input + "]";
-		    System.out.println(input);
 		    parseLoc(input);
 			
 			
 			
-			String urlString = "http://forecast.weather.gov/MapClick.php?lat="+ lat +"&lon=" + lng + "&FcstType=json";
+			String urlString = "http://forecast.weather.gov/MapClick.php?lat=";
+			urlString = urlString + lat;
+			urlString = urlString + "&lon="; 
+			urlString = urlString +lng; 
+			urlString = urlString + "&FcstType=json";
 			url = new URL(urlString);
 			URLConnection connect = url.openConnection();
 		    BufferedReader in = new BufferedReader(new InputStreamReader(
                     connect.getInputStream()));
-
+		    input = "[";
 		    while((line = in.readLine() ) != null )
 		    {
 		    	
@@ -85,7 +88,6 @@ public class Weather {
 		{
 			
 		JSONArray array = new JSONArray(input);
-		System.out.println(array.length());
 		getCurrentWeather(array.getJSONObject(0).getJSONObject("currentobservation"));
 		
 		loc = array.getJSONObject(0).getJSONObject("location");
@@ -126,7 +128,6 @@ public class Weather {
 			
 			lat = obj.getDouble("lat");
 			lng = obj.getDouble("lng");
-			System.out.println(lat + " " + lng);
 		}
 		catch (Exception e) {e.printStackTrace(System.out);}
 	}
