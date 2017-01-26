@@ -32,7 +32,8 @@ public class Weather {
 		try
 		{
 
-			location = scanner.next();
+			location = scanner.nextLine();
+			location = location.replaceAll("\\s+","");
 			url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + location +
 					"&components=administrative_area:TX|country:US&key=AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI");
 			BufferedReader bRead = new BufferedReader(new InputStreamReader(
@@ -156,7 +157,7 @@ public class Weather {
 			deg = o.getString("Windd");
 			deg = toDirection(Double.parseDouble(deg));
 			current = "Currently: " + o.getString("Temp") + DEGREE +"F, " + o.getString("Winds") + "MPH  "
-				+ deg + ", " + o.getString("Weather") + ", " + o.getString("Dewp") + DEGREE + " Dew";
+				+ deg + ", " + o.getString("Weather") + ", " + o.getString("Dewp") + DEGREE + "F Dew";
 		}
 		catch (Exception e) {
 			e.printStackTrace(System.out);
