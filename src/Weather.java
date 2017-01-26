@@ -4,9 +4,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.*;
 import java.util.ArrayList;
 
 import org.json.*;
+
+// api key AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
+// https://maps.googleapis.com/maps/api/geocode/json?address=Austin&components=administrative_area:TX|country:US&key=AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
 public class Weather {
 	
 	final static String DEGREE = "\u00b0";
@@ -44,7 +48,8 @@ public class Weather {
 		catch (Exception e)
 		{
 			System.out.println(e.getMessage());
-		}		
+		}	
+		
 	}
 	
 	//function used to create a JSON object and parse all data needed and call helper functions to access data
