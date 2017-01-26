@@ -1,3 +1,6 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,31 +11,89 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+
 import org.json.*;
 
 // api key AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
 // https://maps.googleapis.com/maps/api/geocode/json?address=Austin&components=administrative_area:TX|country:US&key=AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
 public class Weather {
 	
+	public static JPanel gui;
+	public static JTextArea editArea;
 	final static String DEGREE = "\u00b0";
 	public static double lat, lng;
 	public static String current;
 	public static int SIZE = 13;
+	public static String location;
 	public static String[] periodname = new String[SIZE];
 	//public static ArrayList<WeatherObject> weathers;
 	public static WeatherObject[]  weathers = new WeatherObject[SIZE]; 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		URL url = null;
-		Scanner scanner = new Scanner(System.in);
-		String location;
-	    String line;
+		
+		
+		
+		//= JPanel(new BorderLayout());
+		gui = new JPanel();
+        gui.setBorder(new EmptyBorder(2,3,2,3));
+
+        // adjust numbers for a bigger default area
+        editArea = new JTextArea(5,40);
+        // adjust the font to a monospaced font.
+        Font font = new Font(
+                Font.MONOSPACED, 
+                Font.PLAIN, 
+                editArea.getFont().getSize());
+        editArea.setFont(font);
+        gui.add(new JScrollPane(editArea,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+
+		JButton button;
+		button = new JButton();
+		
+		button.setText("Click Me");
+		button.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  System.out.println(editArea.getText());
+				  location = editArea.getText();
+				  editArea.setText("");
+				  doWork(location);
+				  } 
+			 
+				} );
+		
+		gui.add(button, JButton.CENTER);
+		JFrame frame = new JFrame("palindrome");
+		frame.add(gui);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		
+
+		//5. Show it.
+		frame.setVisible(true);
+
+		
+	}
+	
+	public static void doWork(String location)
+	{
+		URL url;
+		String line;
 	    String input = "[";
 		
 		try
 		{
 
-			location = scanner.nextLine();
+			//location = scanner.nextLine();
 			location = location.replaceAll("\\s+","");
 			url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + location +
 					"&components=administrative_area:TX|country:US&key=AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI");
@@ -76,7 +137,7 @@ public class Weather {
 		{
 			System.out.println(e.getMessage());
 		}	
-		
+			
 	}
 	
 	//function used to create a JSON object and parse all data needed and call helper functions to access data
@@ -94,6 +155,7 @@ public class Weather {
 		loc = array.getJSONObject(0).getJSONObject("location");
 		System.out.println(loc.getString("areaDescription"));
 		System.out.println(current);
+		editArea.setText(current);
 		obj = array.getJSONObject(0).getJSONObject("time");
 		populateperiodname(obj);
 		obj = array.getJSONObject(0).getJSONObject("data");
@@ -175,6 +237,7 @@ public class Weather {
 			out = periodname[i] + ": " + weathers[i].getTemp() + DEGREE +"F, " + weathers[0].getPop() + "% precip, ";
 			out = out + weathers[i].getWeatherdescr();
 			System.out.println(out);
+			editArea.setText(out);
 		}
 	}
 	
