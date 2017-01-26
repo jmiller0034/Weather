@@ -45,7 +45,7 @@ public class Weather {
         gui.setBorder(new EmptyBorder(2,3,2,3));
 
         // adjust numbers for a bigger default area
-        editArea = new JTextArea(5,40);
+        editArea = new JTextArea(20,50);
         // adjust the font to a monospaced font.
         Font font = new Font(
                 Font.MONOSPACED, 
@@ -56,7 +56,7 @@ public class Weather {
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
 
-		JButton button;
+		JButton button, button1;
 		button = new JButton();
 		
 		button.setText("Click Me");
@@ -71,7 +71,16 @@ public class Weather {
 				} );
 		
 		gui.add(button, JButton.CENTER);
-		JFrame frame = new JFrame("palindrome");
+		button1 = new JButton();
+		button1.setText("Clear");
+		button1.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  editArea.setText("");
+				  } 
+			 
+				} );
+		gui.add(button1, JButton.CENTER);
+		JFrame frame = new JFrame("Weather");
 		frame.add(gui);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,8 +163,9 @@ public class Weather {
 		
 		loc = array.getJSONObject(0).getJSONObject("location");
 		System.out.println(loc.getString("areaDescription"));
+		editArea.setText(loc.getString("areaDescription") + "\n");
 		System.out.println(current);
-		editArea.setText(current);
+		editArea.append(current + "\n");
 		obj = array.getJSONObject(0).getJSONObject("time");
 		populateperiodname(obj);
 		obj = array.getJSONObject(0).getJSONObject("data");
@@ -237,7 +247,7 @@ public class Weather {
 			out = periodname[i] + ": " + weathers[i].getTemp() + DEGREE +"F, " + weathers[0].getPop() + "% precip, ";
 			out = out + weathers[i].getWeatherdescr();
 			System.out.println(out);
-			editArea.setText(out);
+			editArea.append(out + "\n");
 		}
 	}
 	
