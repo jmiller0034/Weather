@@ -153,8 +153,8 @@ public class Weather {
 	public static void parser(String input)
 	{
 		JSONObject obj, loc;
-		JSONArray temp, pop, weather;
-		String tempS, weatherS, popS;
+		JSONArray temp, pop, weather, text;
+		String tempS, weatherS, popS, textS;
 		try
 		{
 			
@@ -172,13 +172,14 @@ public class Weather {
 		temp = obj.getJSONArray("temperature");
 		pop = obj.getJSONArray("pop");
 		weather = obj.getJSONArray("weather");
-		
+		text = obj.getJSONArray("text");
 		 for(int i=0; i< SIZE; i++){
 			 tempS = temp.getString(i);
 			 popS = pop.get(i).toString();
 			 if (popS.equals("null")) {popS = "0";}
 			 weatherS = weather.getString(i);
-			 weathers[i] = (new WeatherObject(tempS, popS, weatherS));
+			 textS = text.getString(i);
+			 weathers[i] = (new WeatherObject(tempS, popS, weatherS, textS));
 		 }
 		 
 		}
