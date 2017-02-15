@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/jakemiller/Downloads/java-json.jar.zip"/>
 	<classpathentry kind="lib" path="/Users/jakemiller/Downloads/java-json.jar"/>
+	<classpathentry kind="lib" path="/Users/jakemiller/Downloads/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

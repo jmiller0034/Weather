@@ -10,7 +10,9 @@ import java.net.URLConnection;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.json.*;
+
 
 // api key AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
 // https://maps.googleapis.com/maps/api/geocode/json?address=Austin&components=administrative_area:TX|country:US&key=AIzaSyA_MTvcjFSCaapbmnCm0PWbPPTmcDYpfdI
@@ -116,7 +119,6 @@ public class Weather {
 		    }
 		    input = input + "]";
 		    parseLoc(input);
-			
 			
 			
 			String urlString = "http://forecast.weather.gov/MapClick.php?lat=";
